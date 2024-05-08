@@ -1,22 +1,22 @@
 import  React, {useState, useEffect }  from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { learnerList } from "../../../actions/authActions/adminActions";
+import { instructorList } from "../../../actions/authActions/adminActions";
 import AdminActionModal from "./AdminActionModal";
 
-const LearnersList = () =>{
+const InstructorsList = () =>{
 
   const { userInfo } = useSelector((state) => state.user_Login);
   const history = useNavigate();
 
   const dispatch = useDispatch();
-  const {  learners } = useSelector(state => state.learner_List);
+  const {  instructors } = useSelector(state => state.instructor_List);
 
   useEffect(() => {
-    dispatch(learnerList());
+    dispatch(instructorList());
   }, [dispatch]);
 
-  console.log("learners", learners);
+  console.log("instructors", instructors);
   
   return (
     <div className="container py-5">
@@ -45,9 +45,9 @@ const LearnersList = () =>{
 
   <tbody>
 
-  {learners !== null ? (
-    Array.isArray(learners) && learners.map((learner) => (
-    <tr key={learner._id}>
+  {instructors !== null ? (
+    Array.isArray(instructors) && instructors.map((instructor) => (
+    <tr key={instructor._id}>
 
       <td>
         <div className="d-flex align-items-center">
@@ -58,18 +58,18 @@ const LearnersList = () =>{
             className="rounded-circle"
           />
           <div className="ms-3">
-            <p className="fw-bold mb-1">{learner.name}</p>
-            <p className="text-muted mb-0">{learner.email}</p>
+            <p className="fw-bold mb-1">{instructor.name}</p>
+            <p className="text-muted mb-0">{instructor.email}</p>
           </div>
         </div>
       </td>
 
       <td>
-        <p className="text-muted mb-0">{learner.role}</p>
+        <p className="text-muted mb-0">{instructor.role}</p>
       </td>
 
       <td>
-        <button className="btn btn-link btn-sm"><AdminActionModal user={learner}/></button>
+        <button className="btn btn-link btn-sm"><AdminActionModal user={instructor}/></button>
       </td>
 
     </tr>   
@@ -90,4 +90,4 @@ const LearnersList = () =>{
   );
 }
 
-export default LearnersList;
+export default InstructorsList;

@@ -7,121 +7,213 @@ import {
 	UPDATE_REQUEST, UPDATE_SUCCESS, UPDATE_FAIL} 
 from '../../constants/authConstants/authConstants';
 
+
+
 // user login action
 export const login = (email, password) => async (dispatch) => {
-  try {
-    dispatch ({ type: LOGIN_LOADING});
+    try {
+        // Dispatch action to indicate the login request is loading
+        dispatch ({ type: LOGIN_LOADING });
 
-    const config = {
-        headers: {
-            "Content-type": "application/json",
-        },
-    };
+        // Prepare request headers
+        const config = {
+            headers: {
+                "Content-type": "application/json",
+            },
+        };
 
-    const {data} = await axios.post(`${API_ENDPOINT}/academify/user/login`, { email, password }, config);
-    console.log(data);
+        // Send POST request to login user
+        const { data } = await axios.post(`${API_ENDPOINT}/academify/user/login`, { email, password }, config);
 
-    console.log('Dispatching action:', { type: LOGIN_SUCCESS, payload: data });
-    dispatch({type: LOGIN_SUCCESS, payload: data});
+        // Dispatch action to indicate successful login
+        dispatch({ type: LOGIN_SUCCESS, payload: data });
 
-    swal({
-        title: "Logged In!",
-		text: "User Log In Successful.",
-		icon: "success",
-		timer: 2000,
-		button: false,
-    });
-    setTimeout(function () {
-        window.location.href = "/";
+        // Display success message using swal
+        swal({
+            title: "Logged In",
+            text: "User log in successful.",
+            icon: "success",
+            timer: 2000, // Automatically close after 2 seconds
+            button: false, // No need for a button
+        });
 
-    }, 2000);
+        // Redirect to home page after a short delay
+        setTimeout(function () {
+            window.location.href = "/";
+        }, 2000);
 
-    localStorage.setItem("userInfo", JSON.stringify(data));
-    
+        // Store user info in localStorage
+        localStorage.setItem("userInfo", JSON.stringify(data));
 
-  } catch (error) {
-    dispatch ({
-        type : LOGIN_FAILURE,
-        payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    });
-  }
+    } catch (error) {
+        // Provide a generic error message
+        const errorMessage = error.response && error.response.data.message ? error.response.data.message : error.message;
+
+        // Dispatch action to indicate login failure
+        dispatch ({
+            type: LOGIN_FAILURE,
+            payload: errorMessage,
+        });
+    }
 };
+
+
 
 // user register action
 export const userRegister = (role, name, email, password) => async (dispatch) => {
-	try {
-		dispatch({ type: REGISTER_REQUEST });
+    try {
+        // Dispatch action to indicate the registration request has started
+        dispatch({ type: REGISTER_REQUEST });
 
-		const config = {
-			headers: {
-				"Content-type": "application/json",
-			},
-		};
+        // Prepare request headers
+        const config = {
+            headers: {
+                "Content-type": "application/json",
+            },
+        };
 
-		const { data } = await axios.post(
-			`${API_ENDPOINT}/academify/user/register`,
-			{
+        // Send POST request to register user
+        const { data } = await axios.post(
+            `${API_ENDPOINT}/academify/user/register`,
+            {
                 role,
-				name,
-				email,
-				password
-			},
-			config
-		);
+                name,
+                email,
+                password
+            },
+            config
+        );
 
-		dispatch({ type: REGISTER_SUCCESS, payload: data });
-		
-		swal({
-			title: "Registered!",
-			text: "User Registration Successful.",
-			icon: "success",
-			timer: 2000,
-			button: false,
-		});
+        // Dispatch action to indicate successful registration
+        dispatch({ type: REGISTER_SUCCESS, payload: data });
+        
+        // Display success message using swal
+        swal({
+            title: "Registered",
+            text: "User registration successful.",
+            icon: "success",
+            timer: 2000, // Automatically close after 2 seconds
+            button: false, // No need for a button
+        });
 
-		setTimeout(function () {
-			window.location.href = "/";
-		}, 2000);
-		
-	} catch (error) {
+        // Redirect to home page after a short delay
+        setTimeout(function () {
+            window.location.href = "/";
+        }, 2000);
+        
+    } catch (error) {
+        // Provide a generic error message
+        const errorMessage = error.response && error.response.data.message ? error.response.data.message : error.message;
 
-		dispatch({
-			type: REGISTER_FAILURE,
-			payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-		});
-	}
+        // Dispatch action to indicate registration failure
+        dispatch({
+            type: REGISTER_FAILURE,
+            payload: errorMessage,
+        });
+    }
 };
+
+
 
 // user profile view action
 export const userViewProfile = (user) => async (dispatch, getState) => {
-	try {
-		dispatch({ type: USER_VIEW_REQUEST });
+    try {
+        // Dispatch action to indicate the view request has started
+        dispatch({ type: USER_VIEW_REQUEST });
 
-		const { user_Login: { userInfo }, } = getState();
+        // Get user info from the state
+        const { user_Login: { userInfo }, } = getState();
 
-		const config = {
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${userInfo.token}`,
-			},
-		};
+        // Prepare request headers with authorization token
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
 
-		const { data } = await axios.get(`${API_ENDPOINT}/academify/user/view`, user, config);
-        console.log(data);
+        // Send GET request to retrieve user profile
+        const { data } = await axios.get(`${API_ENDPOINT}/academify/user/view`, config);
 
-		dispatch({ type: USER_VIEW_SUCCESS, payload: data });
-		dispatch({ type: LOGIN_SUCCESS, payload: data });
+        // Dispatch action to indicate successful view
+        dispatch({ type: USER_VIEW_SUCCESS, payload: data });
 
-		localStorage.setItem("userInfo", JSON.stringify(data));
+        // Update user info in the state
+        dispatch({ type: LOGIN_SUCCESS, payload: data });
 
-	} catch (error) {
-		dispatch({
+        // Store user info in localStorage
+        localStorage.setItem("userInfo", JSON.stringify(data));
 
-			type: USER_VIEW_FAIL,
-			payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-		});
-	}
+    } catch (error) {
+        // Provide a generic error message
+        const errorMessage = error.response && error.response.data.message ? error.response.data.message : error.message;
+
+        // Dispatch action to indicate view failure
+        dispatch({
+            type: USER_VIEW_FAIL,
+            payload: errorMessage,
+        });
+    }
 };
+
+
+
+// user profile update action
+export const userUpdateProfile = (user) => async (dispatch, getState) => {
+    try {
+        // Dispatch action to indicate the update request has started
+        dispatch({ type: UPDATE_REQUEST });
+
+        // Get user info from the state
+        const { user_Login: { userInfo } } = getState();
+
+        // Prepare request headers with authorization token
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        // Send PUT request to update user profile
+        const { data } = await axios.put(`${API_ENDPOINT}/academify/user/edit/${userInfo._id}`, user, config);
+
+        // Dispatch action to indicate successful update
+        dispatch({ type: UPDATE_SUCCESS, payload: data });
+
+        // Display success message using swal
+        swal({
+            title: "Updated",
+            text: "User account updated successfully.",
+            icon: "success",
+            timer: 2000, // Automatically close after 2 seconds
+            button: false, // No need for a button
+        });
+
+        // Update user info in the state
+        dispatch({ type: LOGIN_SUCCESS, payload: data });
+
+        // Redirect to user profile after a short delay
+        setTimeout(function () {
+            window.location.href = "/user-profile";
+        }, 2000);
+
+        // Store updated user info in localStorage
+        localStorage.setItem("userInfo", JSON.stringify(data));
+
+    } catch (error) {
+        // Provide a generic error message
+        const errorMessage = error.response && error.response.data.message ? error.response.data.message : error.message;
+
+        // Dispatch action to indicate update failure
+        dispatch({
+            type: UPDATE_FAIL,
+            payload: errorMessage,
+        });
+    }
+};
+
+
 
 // user log out action
 export const userLogout = () => async (dispatch) => {
@@ -131,47 +223,4 @@ export const userLogout = () => async (dispatch) => {
 	setTimeout(function () {
 		window.location.href = "/";
 	}, 2000);
-};
-
-// user profile update action
-export const userUpdateProfile = (user) => async (dispatch, getState) => {
-	try {
-		dispatch({ type: UPDATE_REQUEST });
-
-		const { user_Login: { userInfo } } = getState();
-
-		const config = {
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${userInfo.token}`,
-			},
-		};
-
-		const { data } = await axios.put(`${API_ENDPOINT}/academify/user/edit/${userInfo._id}`, user, config);
-
-		dispatch({ type: UPDATE_SUCCESS, payload: data });
-		swal({
-			title: "Updated!",
-			text: "User Account Update Successfully.",
-			icon: "success",
-			timer: 2000,
-			button: false,
-		});
-
-		dispatch({ type: LOGIN_SUCCESS, payload: data });
-
-		setTimeout(function () {
-			window.location.href = "/user-profile";
-			
-		}, 2000);
-		localStorage.setItem("userInfo", JSON.stringify(data));
-
-
-	} catch (error) {
-
-		dispatch({
-			type: UPDATE_FAIL,
-			payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-		});
-	}
 };
