@@ -43,7 +43,7 @@ const Navbar = () => {
           <ul className="navbar-nav mb-2 mb-lg-0 d-flex">
             {userInfo ? (
               <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class="bi bi-person-fill-check"></i>
               </a>
               <ul class="dropdown-menu">

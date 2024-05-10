@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateUserById, deleteUserById } from '../../../actions/authActions/adminActions';
+import { updateCourse, deleteCourse } from '../../../actions/courseActions/courseActions';
 
-const AdminActionModal = ({ user }) => {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [adminActionModal, setAdminActionModal] = useState(false);
+const CourseActionModal = ({ course }) => {
+    const [courseID, setCourseID] =useState('');
+    const [courseName, setCourseName] = useState('');
+    const [courseDuration, setCourseDuration] = useState('');
+    const [coursePrice, setCoursePrice] = useState('');
+    const [courseDescription, setCourseDescription] = useState('');
+
+    const [CourseActionModal, setCourseActionModal] = useState(false);
     const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
 
     const dispatch = useDispatch();
@@ -14,55 +17,67 @@ const AdminActionModal = ({ user }) => {
     const { userInfo } = user_Login;
 
     useEffect(() => {
-        if (user) {
-            setName(user.name);
-            setEmail(user.email);
+        if (course) {
+            setCourseName(course.courseName);
+            setCourseDuration(course.courseDuration);
+            setCoursePrice(course.coursePrice);
+            setCourseDescription(course.courseDescription);
         }
-    }, [user]);
+    }, [course]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const userUpdatedInfo = {
-            name,
-            email,
-            password,
+        const courseUpdatedInfo = {
+            courseID,
+            courseName,
+            courseDuration,
+            coursePrice,
+            courseDescription
         };
 
-        dispatch(updateUserById(user._id, user.role, name, email, password));
+        dispatch(updateCourse(course._id, courseUpdatedInfo));
     };
 
     const handleDelete = () => {
-        dispatch(deleteUserById(user._id));
+        dispatch(deleteCourse(course._id));
         setDeleteConfirmationModal(false);
     };
 
     return (
         <>
-            <button type="button" className="btn btn-outline-primary ms-1" onClick={() => setAdminActionModal(true)}>
+            <button type="button" className="btn btn-outline-primary ms-1" onClick={() => setCourseActionModal(true)}>
                 <i className="bi bi-pencil-square"></i> Edit
             </button>
 
-            {adminActionModal && (
+            {CourseActionModal && (
                 <div className="modal" id="exampleModalToggle2" aria-labelledby="exampleModalToggleLabel2" tabIndex="-1" style={{ display: 'block' }}>
                     <div className="modal-dialog modal-dialog-scrollable">
                         <div className="modal-content p-3">
                             <div className="m-3 d-flex justify-content-end">
-                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setAdminActionModal(false)}></button>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setCourseActionModal(false)}></button>
                             </div>
 
                             <div className="modal-body text-center">
-                                <h3 className="fw-bold mb-2 text-uppercase">Update Profile</h3>
+                                <h3 className="fw-bold mb-2 text-uppercase">Update course</h3>
 
                                 <form onSubmit={handleSubmit}>
                                     <div className="m-4">
                                         <div className="form-floating mb-3">
-                                            <input type="text" className="form-control" id="name" placeholder="" value={name} onChange={(e) => setName(e.target.value)} required />
-                                            <label htmlFor="name">Full name</label>
+                                            <input type="text" className="form-control" id="name" placeholder="" value={courseName} onChange={(e) => setCourseName(e.target.value)} required />
+                                            <label htmlFor="name">Course Name</label>
                                         </div>
                                         <div className="form-floating mb-3">
-                                            <input type="email" className="form-control" id="email" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                                            <label htmlFor="email">Email address</label>
+                                            <input type="text" className="form-control" id="email" placeholder="" value={courseDuration} onChange={(e) => setCourseDuration(e.target.value)} required />
+                                            <label htmlFor="text">Course Duration</label>
+                                        </div>
+                                        <div className="form-floating mb-3">
+                                            <input type="text" className="form-control" id="name" placeholder="" value={coursePrice} onChange={(e) => setCoursePrice(e.target.value)} required />
+                                            <label htmlFor="name">Course Price</label>
+                                        </div>
+                                        <div className="form-floating mb-3">
+                                            <input type="text" className="form-control" id="name" placeholder="" value={courseDescription} onChange={(e) => setCourseDescription(e.target.value)} required />
+                                            <label htmlFor="name">Course Description</label>
                                         </div>
                                     </div>
 
@@ -87,7 +102,7 @@ const AdminActionModal = ({ user }) => {
                                 <button type="button" className="btn-close" onClick={() => setDeleteConfirmationModal(false)}></button>
                             </div>
                             <div className="modal-body">
-                                Are you sure you want to delete this user?
+                                Are you sure you want to delete this course?
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" onClick={() => setDeleteConfirmationModal(false)}>Cancel</button>
@@ -101,4 +116,4 @@ const AdminActionModal = ({ user }) => {
     );
 }
 
-export default AdminActionModal;
+export default CourseActionModal;
