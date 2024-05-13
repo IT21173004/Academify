@@ -12,7 +12,7 @@ import {
 	UPDATE_REQUEST,
 	UPDATE_SUCCESS,
 	UPDATE_FAIL
- } from "../constants/authConstants/authConstants";
+ } from "../../constants/authConstants/authConstants";
 
 export const userLoginReducer = (state = {}, action) => {
 	switch (action.type) {

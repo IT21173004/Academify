@@ -3,7 +3,7 @@ import {
     LEARNER_LIST_REQUEST, LEARNER_LIST_SUCCESS, LEARNER_LIST_FAIL,
     UPDATE_USER_BY_ID_REQUEST, UPDATE_USER_BY_ID_SUCCESS, UPDATE_USER_BY_ID_FAIL,
     DELETE_USER_BY_ID_REQUEST, DELETE_USER_BY_ID_SUCCESS, DELETE_USER_BY_ID_FAIL,
-} from "../constants/authConstants/adminConstants";
+} from "../../constants/authConstants/adminConstants";
 
 
 export const instructorListReducer = (state = { instructors: [] }, action) => {
