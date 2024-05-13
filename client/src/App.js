@@ -6,6 +6,7 @@ import UserProfile from './pages/userProfile/UserProfile';
 import Dashboard from './components/dashbord/Dashboard';
 import AddCourse from './components/dashbord/instructor/AddCourse';
 import CourseView from './pages/courseView/CourseView';
+import AllCourses from './pages/allCourses/AllCourses';
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
           {/* course-service routes */}
           <Route path='/add-course' element={<AddCourse/>} />
           <Route path='/view-course/:id' element={<CourseView/>} />
+          <Route path='/courses' element={<AllCourses/>} />
         </Routes>
       </main>
     </BrowserRouter>

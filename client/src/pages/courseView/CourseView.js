@@ -1,17 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import courseViewImg from '../../assets/images/courseViewImg.png';
 import { getCourseById } from '../../actions/courseActions/courseActions';
 
 const CourseView = () => {
-    const { id } = useParams(); // Get course ID from URL
+    // Get course ID from URL
+    const { id } = useParams(); 
     const dispatch = useDispatch();
+    // Retrieve course details and user login info from Redux store
     const { course } = useSelector((state) => state.course_View);
-    const { userInfo } = useSelector((state) => state.user_Login); // Get user login info from Redux store
+    const { userInfo } = useSelector((state) => state.user_Login); 
 
     useEffect(() => {
-        dispatch(getCourseById(id)); // Fetch course details by ID
+        // Fetch course details by ID
+        dispatch(getCourseById(id)); 
     }, [dispatch, id]);
 
     console.log("courseId", id)
@@ -34,25 +37,27 @@ const CourseView = () => {
                         </div>
                         
                         <div className="col-md-3 d-none d-lg-block">
+                            {/* Display course image */}
                             <img src={courseViewImg} alt="Online Education Platform" className="img-fluid" style={{maxHeight:"350px"}} />
                             
                         </div>
 
                         <div className="col-md-9 px-5">
                             <div className="row pb-4">
-
-                                    <div className='col-md-10'>
+                                <div className='col-md-10'>
                                     <h5 className="pb-4">ABOUT</h5>
+                                    {/* Display course description */}
                                     <p className="text-justify">{course.courseDescription}</p>
-                                    </div>
-                                    <div className='col-md-2'>
+                                </div>
+                                <div className='col-md-2'>
                                     <div className="row mb-0">
+                                        {/* Display course details */}
                                         <small>ID : <text className="text-muted"/>{course.courseID}</small>
                                         <small>By : <text className="text-muted"/>{course.courseInstructor}</small>
                                         <small>Duration : <text className="text-muted"/>{course.courseDuration}</small>
                                         <small>Price : <text className="text-muted"/>{course.coursePrice}</small>
 
-                                        {/* Render add content button if user is user */}
+                                        {/* Render add content button if user is instructor */}
                                         {isInstructor && (
                                             <div className="row mt-4">
                                                 <div className="col text-center">
@@ -69,10 +74,10 @@ const CourseView = () => {
                                             </div>
                                         )}
                                     </div>
-                                    </div>                                
+                                </div>                                
                             </div>
                             <div className="row mt-4">
-                                    <h5 className="pb-4">CONTENT</h5>                             
+                                <h5 className="pb-4">CONTENT</h5>                             
                             </div>
                         </div>
 

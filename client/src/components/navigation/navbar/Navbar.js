@@ -33,8 +33,7 @@ const Navbar = () => {
               Explore
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Take a free course</a></li>
-              <li><a class="dropdown-item" href="#">Subjects</a></li>
+              <li><a class="dropdown-item" href="/courses">Browse Courses</a></li>
             </ul>
             </li>
 
