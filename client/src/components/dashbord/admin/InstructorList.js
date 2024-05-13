@@ -1,22 +1,22 @@
 import  React, {useState, useEffect }  from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { learnerList } from "../../../actions/authActions/adminActions";
+import { instructorList } from "../../../actions/authActions/adminActions";
 import AdminUserActionModal from "./AdminUserActionModal";
 
-const LearnersList = () =>{
+const InstructorsList = () =>{
 
   const { userInfo } = useSelector((state) => state.user_Login);
   const history = useNavigate();
 
   const dispatch = useDispatch();
-  const {  learners } = useSelector(state => state.learner_List);
+  const {  instructors } = useSelector(state => state.instructor_List);
 
   useEffect(() => {
-    dispatch(learnerList());
+    dispatch(instructorList());
   }, [dispatch]);
 
-  console.log("learners", learners);
+  console.log("instructors", instructors);
   
   return (
     <div className="container py-5">
@@ -34,26 +34,26 @@ const LearnersList = () =>{
 
   <tbody>
 
-  {learners !== null ? (
-    Array.isArray(learners) && learners.map((learner) => (
-    <tr key={learner._id}>
+  {instructors !== null ? (
+    Array.isArray(instructors) && instructors.map((instructor) => (
+    <tr key={instructor._id}>
 
       <td>
         <div className="d-flex align-items-center">
         <h2><i class="bi bi-person-badge"></i></h2>
           <div className="ms-3">
-            <p className="mb-1">{learner.name}</p>
-            <small><p className="text-muted mb-0">{learner.email}</p></small>
+            <p className="mb-1">{instructor.name}</p>
+            <small><p className="text-muted mb-0">{instructor.email}</p></small>
           </div>
         </div>
       </td>
 
       <td>
-        <p className="text-muted mb-0">{learner.role}</p>
+        <p className="text-muted mb-0">{instructor.role}</p>
       </td>
 
       <td>
-        <button className="btn btn-link btn-sm"><AdminUserActionModal user={learner}/></button>
+        <button className="btn btn-link btn-sm"><AdminUserActionModal user={instructor}/></button>
       </td>
 
     </tr>   
@@ -74,4 +74,4 @@ const LearnersList = () =>{
   );
 }
 
-export default LearnersList;
+export default InstructorsList;
