@@ -1,59 +1,84 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from "react-redux";
-import courseViewImg from '../../assets/images/courseViewImg.png'
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import courseViewImg from '../../assets/images/courseViewImg.png';
+import { getCourseById } from '../../actions/courseActions/courseActions';
 
 const CourseView = () => {
-    const user_Login = useSelector((state) => state.user_Login); // Get user login info from Redux store
-    const { userInfo } = user_Login; // Destructure userInfo from user_Login
+    const { id } = useParams(); // Get course ID from URL
+    const dispatch = useDispatch();
+    const { course } = useSelector((state) => state.course_View);
+    const { userInfo } = useSelector((state) => state.user_Login); // Get user login info from Redux store
 
-    // Check if user is instructor or admin
-    const Enroll = userInfo && (userInfo.userRole === 'learner');
+    useEffect(() => {
+        dispatch(getCourseById(id)); // Fetch course details by ID
+    }, [dispatch, id]);
+
+    console.log("courseId", id)
+
+    // Check if user is learner or instructor
+    const isLearner = userInfo && userInfo.role === 'learner';
+    const isInstructor = userInfo && userInfo.role === 'instructor';
+
+    const handleAddContent = () => {
+        console.log("Adding content...");
+    };
 
     return (
-        <div className='container-fluid '>
-            <div className='row p-5'>
-                <div className='row mb-4'>
-                    <h3 className='pb-4 text-center mb-3'>COURSE NAME</h3>
-                </div>
-                
-                <div className='col-md-3 d-none d-lg-block'>
-                    <img src={courseViewImg} alt="Online Education Platform" className="img-fluid" style={{maxHeight:"350px"}} />
-                </div>
+        <div className="container-fluid">
+            <div className="row p-5">
+                {course ? (
+                    <>
+                        <div className="row mb-4">
+                            <h3 className="pb-4 text-center text-uppercase mb-3">{course.courseName}</h3>
+                        </div>
+                        
+                        <div className="col-md-3 d-none d-lg-block">
+                            <img src={courseViewImg} alt="Online Education Platform" className="img-fluid" style={{maxHeight:"350px"}} />
+                            
+                        </div>
 
-                <div className='col-md-9 px-5 '>
-                    <div className='row'>
-                        <div className='row'>
-                            <h5 className='pb-4'>DESCRIPTION</h5>
-                            <div className="col">
-                                <p class="text-muted mb-3">courseID</p>
+                        <div className="col-md-9 px-5">
+                            <div className="row pb-4">
+
+                                    <div className='col-md-10'>
+                                    <h5 className="pb-4">ABOUT</h5>
+                                    <p className="text-justify">{course.courseDescription}</p>
+                                    </div>
+                                    <div className='col-md-2'>
+                                    <div className="row mb-0">
+                                        <small>ID : <text className="text-muted"/>{course.courseID}</small>
+                                        <small>By : <text className="text-muted"/>{course.courseInstructor}</small>
+                                        <small>Duration : <text className="text-muted"/>{course.courseDuration}</small>
+                                        <small>Price : <text className="text-muted"/>{course.coursePrice}</small>
+
+                                        {/* Render add content button if user is user */}
+                                        {isInstructor && (
+                                            <div className="row mt-4">
+                                                <div className="col text-center">
+                                                    <button className="btn btn-outline-primary btn-sm" onClick={handleAddContent}>Add Content</button>
+                                                </div>
+                                            </div>
+                                        )}
+                                        {/* Render enroll button if user is learner */}
+                                        {isLearner && (
+                                            <div className="row mt-4">
+                                                <div className="col text-center">
+                                                    <button className="btn btn-outline-primary btn-sm">Enroll</button>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                    </div>                                
                             </div>
-                            <div className="col">
-                                <p className="text">Instructor :</p>
-                                <p className="text-muted">Instructor Name</p>     
-                            </div>
-                            <div className="col">
-                                <p className="text">Institution :</p>
-                                <p className="text-muted">Institution Name</p>     
-                            </div>
-                            <div className="col">
-                                <p className="text">Duration :</p>
-                                <p className="text-muted">Duration</p>     
+                            <div className="row mt-4">
+                                    <h5 className="pb-4">CONTENT</h5>                             
                             </div>
                         </div>
 
-                        <div className='row'>
-                            <h5 className='pb-4'>CONTENT</h5>
-                        </div>
-                    </div>
-                </div>  
-
-                {/* Render enroll button if user is learner */}
-                {Enroll && (
-                    <div className="row mt-4">
-                        <div className="col text-center">
-                            <button className="btn btn-primary">Enroll</button>
-                        </div>
-                    </div>
+                    </>
+                ) : (
+                    <div>Loading...</div>
                 )}
             </div>
         </div>

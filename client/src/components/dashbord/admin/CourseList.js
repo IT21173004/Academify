@@ -1,6 +1,7 @@
 import  React, {useState, useEffect }  from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from 'react-router-dom';
 import { getAllCourses } from "../../../actions/courseActions/courseActions"; 
 import CourseActionModal from "../common/CourseActionModal"
 
@@ -63,7 +64,7 @@ const CourseList = () =>{
 
       <td>
         <button className="btn btn-link btn-sm"><CourseActionModal course={course}/></button>
-        <button type="button" className="btn btn-outline-primary ms-1"> <i class="bi bi-person-up"></i> View </button>
+        <Link to={`/view-course/${course._id}`} className="btn btn-outline-primary ms-1"><i class="bi bi-journal-arrow-up"></i> View</Link>
       </td>
 
     </tr>   

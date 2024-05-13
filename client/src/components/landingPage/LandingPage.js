@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import landpagemain from '../../assets/images/landpagemain.png';
 import AuthModal from '../auth/authModal/AuthModal';
+import CourseListView from '../courseListView/CourseListView';
 
 const LandingPage = () => {
 
@@ -12,7 +13,7 @@ const LandingPage = () => {
   return (
     <div>
 
-      <section className="container-fluid bg-dark text-white">
+      <section className="container-fluid py-5">
         <div className="container">
           <div className="row align-items-center">
             
@@ -41,9 +42,9 @@ const LandingPage = () => {
         </div>
       </section>
       
-      <section className="py-5 d-none d-lg-block">
-        <div className="container">
-          <div className="row mb-3">
+      <section className="d-none d-lg-block py-5">
+        <div className="container pt-5">
+          <div className="row mb-3 pt-5">
             <div className="col-md-4">
               <h2>Learn Anywhere, Anytime</h2>
             </div>
@@ -55,7 +56,7 @@ const LandingPage = () => {
             </div>
           </div>
 
-          <div className="row">
+          <div className="row pb-5">
             <div className="col-md-4">
               <p>Access our courses from any device, at your own pace.</p>       
             </div>
@@ -69,7 +70,12 @@ const LandingPage = () => {
         </div>
       </section>
 
-      
+      <section className="py-5 ">
+          <div className='row'>
+            <CourseListView/>
+          </div>
+          
+      </section>
 
       
       <footer className="bg-dark text-white py-4">

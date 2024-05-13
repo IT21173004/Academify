@@ -79,11 +79,11 @@ export const courseDeleteReducer = (state = {}, action) => {
 
 export const coursesByInstructorReducer = (state = { courselist: [] }, action) => {
 	switch (action.type) {
-		case COURSE_GET_ALL_REQUEST:
+		case COURSES_GET_BY_ID_REQUEST:
 			return { loading: true };
-		case COURSE_GET_ALL_SUCCESS:
+		case COURSES_GET_BY_ID_SUCCESS:
 			return { loading: false, courselist: action.payload };
-		case COURSE_GET_ALL_FAIL:
+		case COURSES_GET_BY_ID_FAIL:
 			return { loading: false, error: action.payload };
 
 		default:
