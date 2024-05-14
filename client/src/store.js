@@ -5,6 +5,7 @@ import { composeWithDevTools } from "@redux-devtools/extension";
 import { userLoginReducer, userRegisterReducer, userViewReducer, userUpdateReducer } from "./reducers/authServiceReducers/authReducers";
 import { updateUserByIdReducer, instructorListReducer, learnerListReducer, deleteUserByIdReducer } from "./reducers/authServiceReducers/adminReducers";
 import { courseCreateReducer, courseViewReducer, courseListReducer, courseUpdateReducer, courseDeleteReducer, coursesByInstructorReducer } from "./reducers/courseServiceReducers/courseReducers";
+import { addContentReducer } from "./reducers/courseServiceReducers/contentReducers";
 
 const reducer = combineReducers({
     user_Login: userLoginReducer,
@@ -21,6 +22,7 @@ const reducer = combineReducers({
     course_Update : courseUpdateReducer,
     course_Delete : courseDeleteReducer,
     CourseById_List : coursesByInstructorReducer,
+    content_Create : addContentReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo") ? JSON.parse(localStorage.getItem("userInfo")) : null;
