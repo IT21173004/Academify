@@ -1,0 +1,67 @@
+version: "3"
+
+services:
+
+  gateway:
+    build: ./gateway
+    ports:
+      - "5001:5001"
+    depends_on:
+      - user-service
+      - course-service
+    develop:
+      watch:
+        - path: ./gateway/package.json
+          action: rebuild
+        - path: ./gateway/package-lock.json
+          action: rebuild
+        - path: ./gateway
+          target: /app
+          action: sync
+
+
+  user-service:
+    build: ./user-service
+    ports:
+      - "5002:5002"
+
+    environment:
+      MONGO_URI: mongodb+srv://Academify:academifySLIIT@academify.bglxvis.mongodb.net
+      TOKEN_SECRET: academify2024
+      ADMIN_EMAIL: academify@admin.com
+      ADMIN_PASSWORD: academifySLIIT
+  
+    develop:
+      watch:
+        - path: ./user-service/package.json
+          action: rebuild
+        - path: ./user-service/package-lock.json
+          action: rebuild
+        - path: ./user-service
+          target: /app
+          action: sync   
+
+
+  course-service:
+    build: ./course-service
+    ports:
+      - "5005:5005"
+
+    develop:
+      watch:
+        - path: ./course-service/package.json
+          action: rebuild
+        - path: ./course-service/package-lock.json
+          action: rebuild
+        - path: ./course-service
+          target: /app
+          action: sync     
+
+    environment:
+      MONGO_URI: mongodb+srv://Academify:academifySLIIT@academify.bglxvis.mongodb.net
+      TOKEN_SECRET: academify2024
+      ADMIN_EMAIL: academify@admin.com
+      ADMIN_PASSWORD: academifySLIIT      
+
+volumes:
+  academify:
