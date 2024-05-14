@@ -46,14 +46,19 @@ export const login = (email, password) => async (dispatch) => {
         localStorage.setItem("userInfo", JSON.stringify(data));
 
     } catch (error) {
-        // Provide a generic error message
-        const errorMessage = error.response && error.response.data.message ? error.response.data.message : error.message;
-
-        // Dispatch action to indicate login failure
-        dispatch ({
-            type: LOGIN_FAILURE,
-            payload: errorMessage,
-        });
+        if (error.response && error.response.status === 400) {
+            // Handle validation error
+            dispatch ({
+                type: LOGIN_FAILURE,
+                payload: error.response.data, // Assuming backend sends error message in response data
+            });
+        } else {
+            // Handle other errors
+            dispatch ({
+                type: LOGIN_FAILURE,
+                payload: "An error occurred",
+            });
+        }
     }
 };
 
@@ -71,6 +76,7 @@ export const userRegister = (role, name, email, password) => async (dispatch) =>
                 "Content-type": "application/json",
             },
         };
+
 
         // Send POST request to register user
         const { data } = await axios.post(
@@ -102,14 +108,19 @@ export const userRegister = (role, name, email, password) => async (dispatch) =>
         }, 2000);
         
     } catch (error) {
-        // Provide a generic error message
-        const errorMessage = error.response && error.response.data.message ? error.response.data.message : error.message;
-
-        // Dispatch action to indicate registration failure
-        dispatch({
-            type: REGISTER_FAILURE,
-            payload: errorMessage,
-        });
+        if (error.response && error.response.status === 400) {
+            // Handle validation error
+            dispatch({
+                type: REGISTER_FAILURE,
+                payload: error.response.data, // Assuming backend sends error message in response data
+            });
+        } else {
+            // Handle other errors
+            dispatch({
+                type: REGISTER_FAILURE,
+                payload: "An error occurred",
+            });
+        }
     }
 };
 

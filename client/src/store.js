@@ -2,8 +2,8 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import {thunk} from "redux-thunk";
 import { composeWithDevTools } from "@redux-devtools/extension";
 
-import { userLoginReducer, userRegisterReducer, userViewReducer, userUpdateReducer } from "./reducers/authReducers";
-import { updateUserByIdReducer, instructorListReducer, learnerListReducer, deleteUserByIdReducer } from "./reducers/adminReducers";
+import { userLoginReducer, userRegisterReducer, userViewReducer, userUpdateReducer } from "./reducers/authServiceReducers/authReducers";
+import { updateUserByIdReducer, instructorListReducer, learnerListReducer, deleteUserByIdReducer } from "./reducers/authServiceReducers/adminReducers";
 import { courseCreateReducer, courseViewReducer, courseListReducer, courseUpdateReducer, courseDeleteReducer, coursesByInstructorReducer } from "./reducers/courseServiceReducers/courseReducers";
 
 const reducer = combineReducers({

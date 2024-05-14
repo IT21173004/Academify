@@ -1,56 +1,91 @@
-import React, { useState, useEffect  } from 'react';
-import {useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { login, userRegister } from '../../../actions/authActions/authActions';
 
-const AuthModal = ({history}) => {
-
+const AuthModal = ({ history }) => {
+  // State variables
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setconfirmPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState('');
+  const [error, setError] = useState('');
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+
+  // Redux dispatch
   const dispatch = useDispatch();
 
-  const [showLoginModal, setShowLoginModal] = useState(false);
+  // Redux state selectors
   const user_Login = useSelector((state) => state.user_Login);
-  const {userInfo } = user_Login;
+  const { userInfo, error: loginError } = user_Login;
+  const user_Register = useSelector((state) => state.user_Register);
+  const { error: registerError } = user_Register;
 
-  useEffect(() => {
-		if (userInfo) {
-			window.history.pushState({}, "", "/");
-		}
-	}, [history, userInfo]);
+  // Close alert after 5 seconds
+  const handleAlertClose = () => {
+    setTimeout(() => {
+      setError('');
+    }, 5000); // 5000 milliseconds = 5 seconds
+  };
 
+  // Handle login form submission
   const handleSubmit = async (e) => {
-		e.preventDefault();
-		dispatch(login(email, password));
-	};
+    e.preventDefault();
+    dispatch(login(email, password));
+  };
 
+  // Handle register form submission
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      // Password mismatch
+      setError("Passwords don't match");
+    } else {
+      // Passwords match, proceed with registration
+      setError('');
+      dispatch(userRegister(role, name, email, password));
+    }
+  };
+
+  // Effect for redirecting after successful login
+  useEffect(() => {
+    if (userInfo) {
+      history.pushState({}, "", "/");
+    }
+  }, [history, userInfo]);
+
+  // Effect for handling login error
+  useEffect(() => {
+    if (loginError) {
+      setError(loginError);
+    }
+  }, [loginError]);
+
+  // Effect for handling registration error
+  useEffect(() => {
+    if (registerError) {
+      setError(registerError);
+    }
+  }, [registerError]);
+
+  // Open login modal
   const handleShowLoginModal = () => {
     setShowLoginModal(true);
     handleCloseRegisterModal();
   };
 
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
-  const user_Register = useSelector((state) => state.user_Register);
-
+  // Close login modal
   const handleCloseLoginModal = () => setShowLoginModal(false);
-  const handleCloseRegisterModal = () => setShowRegisterModal(false);
 
+  // Open register modal
   const handleShowRegisterModal = () => {
     setShowRegisterModal(true);
     handleCloseLoginModal();
   };
 
-  const submitHandler = async (e) => {
-		e.preventDefault();
-
-    if (password !== confirmPassword) {
-		} else {
-			dispatch(userRegister(role,name, email, password));
-		}
-    
-	};
+  // Close register modal
+  const handleCloseRegisterModal = () => setShowRegisterModal(false);
 
   return (
     <>
@@ -73,6 +108,14 @@ const AuthModal = ({history}) => {
 
               <h3 class="fw-bold mb-2 text-uppercase">Login</h3>
               <p class="text-dark mb-5">Please enter your login and password!</p>
+
+              {/* Error Message */}
+              {error && (
+                <div className="alert alert-danger" role="alert">
+                  {error}
+                  {handleAlertClose()}
+                </div>
+              )}
               
               <div className='m-4'>
               <div class="form-floating mb-3 ">
@@ -110,7 +153,15 @@ const AuthModal = ({history}) => {
 
               <h3 class="fw-bold mb-2 text-uppercase">Register</h3>
               <p class="text-dark mb-5">Learn on your own time from <br/>top universities and businesses.</p>
-                
+
+              {/* Error Message */}
+              {error && (
+                <div className="alert alert-danger" role="alert">
+                  {error}
+                  {handleAlertClose()}
+                </div>
+              )}
+            
               <div className='m-4'>
 
               <div className='row justify-content-evenly mb-3'>
@@ -137,7 +188,7 @@ const AuthModal = ({history}) => {
                   <label for="floatingPassword">Password</label>
               </div>
               <div class="form-floating mb-3 ">
-                  <input type="password" class="form-control" id="floatingconfirmPassword" placeholder="Password" value={confirmPassword} onChange={(e) => setconfirmPassword(e.target.value)} required />
+                  <input type="password" class="form-control" id="floatingconfirmPassword" placeholder="Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
                   <label for="floatingconfirmPassword">confirm Password</label>
               </div>
 
@@ -159,6 +210,7 @@ const AuthModal = ({history}) => {
         </div>
       </div>
       )}
+
     </>
   );
 }
