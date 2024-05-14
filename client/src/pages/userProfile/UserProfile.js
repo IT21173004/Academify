@@ -30,19 +30,8 @@ const UserProfile = ({history}) => {
     if(userInfo) {
         
         return(
-            <section style={{backgroundColor: "#eee"}}>
+            <section>
                 <div class="container py-5">
-    
-                <div class="row">
-                <div class="col">
-                    <nav aria-label="breadcrumb" class="bg-body-tertiary rounded-3 p-3 mb-4">
-                    <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="/">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">User Profile</li>
-                    </ol>
-                    </nav>
-                </div>
-                </div>
     
                 <div class="row">
     
@@ -110,37 +99,18 @@ const UserProfile = ({history}) => {
                     </div>
                     </div>
     
-                    <div class="card mb-4">
-                    <div class="card-body">
-                    <p class="mb-4"><span class="text-primary font-italic me-1">Enrolled Courses</span> </p>
-                            {/* <p class="mb-1" style={{fontSize: ".77rem"}}>Web Design</p>
-                            <div class="progress rounded" style={{height: "5px"}}>
-                            <div class="progress-bar" role="progressbar" style={{width: "66%"}} aria-valuenow="80"
-                                aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <p class="mt-4 mb-1" style={{fontSize: ".77rem"}}>Website Markup</p>
-                            <div class="progress rounded" style={{height: "5px"}}>
-                            <div class="progress-bar" role="progressbar" style={{width: "66%"}} aria-valuenow="72"
-                                aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <p class="mt-4 mb-1" style={{fontSize: ".77rem"}}>One Page</p>
-                            <div class="progress rounded" style={{height: "5px"}}>
-                            <div class="progress-bar" role="progressbar" style={{width: "66%"}} aria-valuenow="89"
-                                aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <p class="mt-4 mb-1" style={{fontSize: ".77rem"}}>Mobile Template</p>
-                            <div class="progress rounded" style={{height: "5px"}}>
-                            <div class="progress-bar" role="progressbar" style={{width: "66%"}} aria-valuenow="55"
-                                aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <p class="mt-4 mb-1" style={{fontSize: ".77rem"}}>Backend API</p>
-                            <div class="progress rounded mb-2" style={{height: "5px"}}>
-                            <div class="progress-bar" role="progressbar" style={{width: "66%"}} aria-valuenow="66"
-                                aria-valuemin="0" aria-valuemax="100"></div>
-                            </div> */}
-                    </div>
-                    </div>
-    
+                    {role === "learner" && (
+                        <div class="card mb-4">
+                        <div class="card-body">
+                            <p class="mb-4">
+                            <span class="text-primary font-italic me-1">
+                                Enrolled Courses
+                            </span>{" "}
+                            </p>
+                        </div>
+                        </div>
+                    )}
+                
                     </div>
                 </div>
             </div>
@@ -148,8 +118,8 @@ const UserProfile = ({history}) => {
         )
     }else {
         return (
-            console.log("v:", userInfo)
-        ); // or a loading indicator
+            <div>Error loading user profile.</div>
+        ); 
     }
     
 }
