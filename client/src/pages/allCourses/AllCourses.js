@@ -61,10 +61,14 @@ const AllCourses = () => {
                     </div>
                     <div className="col-md-8">
                       <div className="card-body">
-                        <h5 className="card-title text-uppercase">{course.courseName}</h5>
-                        <small><p className="card-text text-muted mb-1">{course.courseInstructor}</p></small>
-                        <p className="card-text">{truncateText(course.courseDescription, 20)}</p>
-                        <Link to={`/view-course/${course._id}`} className="btn btn-outline-primary btn-sm ms-1" style={{width: "100px"}}>View Course</Link>
+                        <div className="row mb-2"><h6 className="card-title text-uppercase">{truncateText(course.courseName, 6)}</h6></div>
+                        <div className="row mb-2"><small><p className="card-text text-muted mb-1">{course.courseInstructor}</p></small></div>
+                        <div className="row mb-4"><small><p className="card-text">{truncateText(course.courseDescription, 20)}</p></small></div>
+                        <div className="row"><Link to={`/view-course/${course._id}`} className="btn btn-outline-primary btn-sm mx-2" style={{width: "100px"}}>View Course</Link></div>
+                        
+                        
+                        
+                        
                       </div>
                     </div>
                   </div>

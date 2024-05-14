@@ -62,12 +62,14 @@ const CourseListView = () => {
                       <div className="card" style={{ width: "16rem", height: "500px", overflow: "hidden" }}>
                         <img src={cardImg} className="card-img-top" alt="Course" />
                         <div className="card-body">
-                          <h5 className="card-title text-uppercase">{course.courseName}</h5>
-                          <p className="card-text">{truncateText(course.courseDescription, 20)}</p> {/* Limit to 10 words */}
+                          <div className="row mb-2"><h6 className="card-title text-uppercase">{truncateText(course.courseName, 5)}</h6></div>
+                          
+                          <div className="row mb-4"><small><p className="card-text">{truncateText(course.courseDescription, 20)}</p></small> {/* Limit to 10 words */}</div>
+                          
                           <div className="row text-center align-item-center px-2">
                             <Link to={`/view-course/${course._id}`} className="btn btn-outline-primary btn-sm ms-1" style={{width: "100px"}}>View</Link>
-                            </div>
-                          
+                          </div>
+
                         </div>
                       </div>
                     </div>

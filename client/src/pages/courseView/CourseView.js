@@ -61,7 +61,7 @@ const CourseView = () => {
                                         {isInstructor && (
                                             <div className="row mt-4">
                                                 <div className="col text-center">
-                                                    <button className="btn btn-outline-primary btn-sm" onClick={handleAddContent}>Add Content</button>
+                                                    <button className="btn btn-outline-primary btn-sm" onClick={handleAddContent} style={{width: "100px"}}>Add Content</button>
                                                 </div>
                                             </div>
                                         )}

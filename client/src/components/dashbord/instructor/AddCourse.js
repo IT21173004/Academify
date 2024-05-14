@@ -27,7 +27,11 @@ const AddCourse = () => {
     useEffect(() => {
         // Generate a random ID when the component mounts
         setCourseID(generateRandomID());
-    }, []);
+        // Set instructor name when userInfo changes
+        if(userInfo) {
+            setCourseInstructor(userInfo.name);
+        }
+    }, [userInfo]);
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -56,15 +60,15 @@ const AddCourse = () => {
                             </div>
                             <div className="col">
                                 <div className="form-outline">
-                                    <label className="form-label" htmlFor="courseName">Course Name</label>
-                                    <input type="text" id="courseName" className="form-control" value={courseName} onChange={(e) => setCourseName(e.target.value)} />
+                                    <label className="form-label" htmlFor="courseInstructor">Instructor</label>
+                                    <input type="text" id="courseInstructor" className="form-control" value={courseInstructor} onChange={(e) => setCourseInstructor(e.target.value)} disabled />
                                 </div>
                             </div>
                         </div>
                 
                         <div className="form-outline mb-4">
-                            <label className="form-label" htmlFor="courseInstructor">Instructor</label>
-                            <input type="text" id="courseInstructor" className="form-control" value={courseInstructor} onChange={(e) => setCourseInstructor(e.target.value)} />
+                            <label className="form-label" htmlFor="courseName">Course Name</label>
+                            <input type="text" id="courseName" className="form-control" value={courseName} onChange={(e) => setCourseName(e.target.value)} />
                         </div>
 
                         <div className="row mb-4">
