@@ -7,6 +7,8 @@ import { updateUserByIdReducer, instructorListReducer, learnerListReducer, delet
 import { courseCreateReducer, courseViewReducer, courseListReducer, courseUpdateReducer, courseDeleteReducer, coursesByInstructorReducer } from "./reducers/courseServiceReducers/courseReducers";
 import { enrollCreateReducer } from "./reducers/enrollServiceReducers/enrollReducers";
 import { enrollsByStudentReducer } from "./reducers/enrollServiceReducers/enrollReducers";
+import { enrollDeleteReducer } from "./reducers/enrollServiceReducers/enrollReducers";
+
 
 
 const reducer = combineReducers({
@@ -26,6 +28,9 @@ const reducer = combineReducers({
     CourseById_List : coursesByInstructorReducer,
     enroll_Course: enrollCreateReducer,
     enrolls_By_Student: enrollsByStudentReducer,
+    enroll_Delete : enrollDeleteReducer,
+
+
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo") ? JSON.parse(localStorage.getItem("userInfo")) : null;

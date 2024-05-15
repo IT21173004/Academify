@@ -4,7 +4,10 @@ import {
     ENROLL_COURSE_FAIL,
     ENROLLS_GET_BY_ID_REQUEST,
     ENROLLS_GET_BY_ID_SUCCESS,
-    ENROLLS_GET_BY_ID_FAIL
+    ENROLLS_GET_BY_ID_FAIL,
+    ENROLL_DELETE_REQUEST,
+    ENROLL_DELETE_SUCCESS,
+    ENROLL_DELETE_FAIL
 } from '../../constants/enrollConstants/enrollConstants'; // Adjust import path if needed
 
 const initialState = {
@@ -63,3 +66,18 @@ export const enrollsByStudentReducer = (state = initialState, action) => {
             return state;
     }
 };
+
+
+export const enrollDeleteReducer = (state = {}, action) => {
+    switch (action.type) {
+      case ENROLL_DELETE_REQUEST:
+        return { loading: true };
+      case ENROLL_DELETE_SUCCESS:
+        return { loading: false, success: true };
+      case ENROLL_DELETE_FAIL:
+        return { loading: false, error: action.payload };
+      default:
+        return state;
+    }
+  };
+
