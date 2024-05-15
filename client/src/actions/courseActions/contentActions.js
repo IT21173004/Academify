@@ -4,9 +4,15 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import Swal from 'sweetalert';
 import { API_ENDPOINT } from "../../config";
 import { 
-    ADD_CONTENT_REQUEST, ADD_CONTENT_SUCCESS, ADD_CONTENT_FAILURE
+    ADD_CONTENT_REQUEST, ADD_CONTENT_SUCCESS, ADD_CONTENT_FAILURE,
+    GET_CONTENT_FOR_COURSE_REQUEST, GET_CONTENT_FOR_COURSE_SUCCESS, GET_CONTENT_FOR_COURSE_FAILURE,
+    GET_SPECIFIC_CONTENT_REQUEST, GET_SPECIFIC_CONTENT_SUCCESS, GET_SPECIFIC_CONTENT_FAILURE
  } from '../../constants/courseConstants/contentConstants';
 
+
+
+ 
+  // Action creator to create content 
 export const addContent = (formData) => async (dispatch, getState) => {
     try {
       dispatch({
@@ -82,3 +88,90 @@ export const addContent = (formData) => async (dispatch, getState) => {
       });
     }
   };
+
+
+
+  // Action creator to fetch content for a specific course
+export const getContentForCourse = (courseId) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: GET_CONTENT_FOR_COURSE_REQUEST,
+    });
+
+      // Get user info from state
+      const {
+        user_Login: { userInfo },
+      } = getState();
+
+      // Configure request headers
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };    
+
+    const res = await axios.get(`${API_ENDPOINT}/course/course/content/${courseId}/all-content`);
+    
+    dispatch({
+      type: GET_CONTENT_FOR_COURSE_SUCCESS,
+      payload: res.data // Assuming the response contains the content data
+    });
+
+  } catch (error) {
+    // If content addition fails, dispatch failure action and display error message
+    const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+      
+    dispatch({
+      type: GET_CONTENT_FOR_COURSE_FAILURE,
+      payload: message,
+    });
+    
+    Swal("Error", error.message || "Failed to load content", "error"); // Display error message with SweetAlert
+  }
+};
+
+
+
+// Action creator to fetch specific content
+export const getSpecificContent = (contentId) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: GET_SPECIFIC_CONTENT_REQUEST,
+    });
+
+    // Get user info from state
+    const {
+      user_Login: { userInfo },
+    } = getState();
+
+    // Configure request headers
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const res = await axios.get(`${API_ENDPOINT}/course/course/content/view-content/${contentId}`);
+    
+    console.log("content Action", contentId)
+
+    dispatch({
+      type: GET_SPECIFIC_CONTENT_SUCCESS,
+      payload: res.data // Assuming the response contains the specific content data
+    });
+
+  } catch (error) {
+    // If content loading fails, dispatch failure action and display error message
+    const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+      
+    dispatch({
+      type: GET_SPECIFIC_CONTENT_FAILURE,
+      payload: message,
+    });
+
+    // Display error message with SweetAlert
+    Swal("Error", message || "Failed to load content", "error");
+  }
+};
