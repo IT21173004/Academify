@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCoursesByStudentId, deleteEnroll } from '../../../actions/enrollActions/enrollActions'; // Import deleteEnroll action
+import { getCoursesByStudentId, deleteEnroll } from '../../../actions/enrollActions/enrollActions';
 
 const StudentCourseList = () => {
     const dispatch = useDispatch();
     const { userInfo } = useSelector(state => state.user_Login);
     const { enrolllist, loading, error } = useSelector(state => state.enrolls_By_Student);
+    const [showAlert, setShowAlert] = useState(false);
+    const [enrollmentIdToDelete, setEnrollmentIdToDelete] = useState(null);
 
     useEffect(() => {
         if (userInfo) {
@@ -14,8 +16,14 @@ const StudentCourseList = () => {
     }, [dispatch, userInfo]);
 
     const handleDelete = (enrollmentId) => {
-        console.log('Deleting enrollment:', enrollmentId);
-        dispatch(deleteEnroll(enrollmentId)); // Dispatch deleteEnroll action
+        setEnrollmentIdToDelete(enrollmentId);
+        setShowAlert(true);
+    };
+
+    const confirmDelete = () => {
+        console.log('Deleting enrollment:', enrollmentIdToDelete);
+        dispatch(deleteEnroll(enrollmentIdToDelete));
+        setShowAlert(false);
     };
 
     return (
@@ -27,7 +35,7 @@ const StudentCourseList = () => {
                             <th scope="col">Course ID</th>
                             <th scope="col">Course Name</th>
                             <th scope="col">Mobile Number</th>
-                            <th scope="col">Actions</th> {/* Added Actions column */}
+                            <th scope="col">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,7 +60,7 @@ const StudentCourseList = () => {
                                         >
                                             Un-Enroll
                                         </button>
-                                    </td> {/* Added Delete button */}
+                                    </td>
                                 </tr>
                             ))
                         ) : (
@@ -63,6 +71,34 @@ const StudentCourseList = () => {
                     </tbody>
                 </table>
             </div>
+            {showAlert && (
+                <div
+                    style={{
+                        position: 'fixed',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        padding: '20px',
+                        width: '500px', 
+                        height: '130px', 
+                        background: '#f8d7da',
+                        color: '#721c24',
+                        border: '1px solid #f5c6cb',
+                        borderRadius: '5px',
+                        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+                    }}
+                >
+                    <p>Are you sure you want to un-enroll from this course?</p>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <button className="btn btn-secondary" onClick={() => setShowAlert(false)}>
+                            Cancel
+                        </button>
+                        <button className="btn btn-danger" onClick={confirmDelete}>
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
