@@ -65,3 +65,34 @@ exports.viewContent = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+
+// Update existing content
+exports.updateContent = async (req, res) => {
+  const { id } = req.params;
+  const { courseID, lessonNumber, lessonName, content } = req.body;
+  const fileUrl = req.file ? req.file.path : null; // Assuming the file path is stored in req.file.path
+
+  try {
+    // Find the existing content by ID
+    const existingContent = await Content.findById(id);
+
+    if (!existingContent) {
+      return res.status(404).json({ message: 'Content not found' });
+    }
+
+    // Update the content fields
+    existingContent.courseID = courseID;
+    existingContent.lessonNumber = lessonNumber;
+    existingContent.lessonName = lessonName;
+    existingContent.content = content;
+    existingContent.fileUrl = fileUrl || existingContent.fileUrl; // Preserve existing file URL if no new file uploaded
+
+    // Save the updated content
+    const savedContent = await existingContent.save();
+    res.status(200).json(savedContent);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};

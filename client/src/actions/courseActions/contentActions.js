@@ -6,7 +6,8 @@ import { API_ENDPOINT } from "../../config";
 import { 
     ADD_CONTENT_REQUEST, ADD_CONTENT_SUCCESS, ADD_CONTENT_FAILURE,
     GET_CONTENT_FOR_COURSE_REQUEST, GET_CONTENT_FOR_COURSE_SUCCESS, GET_CONTENT_FOR_COURSE_FAILURE,
-    GET_SPECIFIC_CONTENT_REQUEST, GET_SPECIFIC_CONTENT_SUCCESS, GET_SPECIFIC_CONTENT_FAILURE
+    GET_SPECIFIC_CONTENT_REQUEST, GET_SPECIFIC_CONTENT_SUCCESS, GET_SPECIFIC_CONTENT_FAILURE,
+    UPDATE_CONTENT_REQUEST, UPDATE_CONTENT_SUCCESS, UPDATE_CONTENT_FAILURE
  } from '../../constants/courseConstants/contentConstants';
 
 
@@ -173,5 +174,74 @@ export const getSpecificContent = (contentId) => async (dispatch, getState) => {
 
     // Display error message with SweetAlert
     Swal("Error", message || "Failed to load content", "error");
+  }
+};
+
+
+// Action creator to update specific content
+export const updateContent = (contentID, formData) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: UPDATE_CONTENT_REQUEST,
+    });
+
+    // Get user info from state
+    const {
+      user_Login: { userInfo },
+    } = getState();
+
+    // Configure request headers
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    // Upload the file to Firebase Storage if a new file is provided
+    const file = formData.get('file');
+    let fileUrl = null;
+    if (file) {
+      const storageRef = ref(storage, `uploads/${file.name}`);
+      const snapshot = await uploadBytes(storageRef, file);
+      fileUrl = await getDownloadURL(snapshot.ref);
+    }
+
+    // Set the file URL in formData
+    formData.set('fileUrl', fileUrl);
+
+    // Make PUT request to update content
+    const { data } = await axios.put(
+      `${API_ENDPOINT}/course/course/content/update-content/${contentID}`,
+      formData,
+      config
+    );
+
+    // Dispatch success action and show success message
+    dispatch({
+      type: UPDATE_CONTENT_SUCCESS,
+      payload: data,
+    });
+    Swal({
+      title: "Success !!!",
+      text: "Content Updated Successfully.",
+      icon: "success",
+      timer: 2000,
+      button: false,
+    });
+  } catch (error) {
+    // If content update fails, dispatch failure action and display error message
+    const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+    
+    dispatch({
+      type: UPDATE_CONTENT_FAILURE,
+      payload: message,
+    });
+    Swal({
+      title: "Error !!!",
+      text: message || "Failed to update content.",
+      icon: "error",
+      timer: 2000,
+      button: false,
+    });
   }
 };
