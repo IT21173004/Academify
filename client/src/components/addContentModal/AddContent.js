@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContent } from '../../actions/courseActions/contentActions';
 
-const AddContentModal = ({ course }) => {
+const AddContentModal = () => {
     const [AddContentModal, setAddContentModal] = useState(false);
 
+    const [courseID, setCourseID] = useState('');
     const [lessonNumber, setLessonNumber] = useState('');
     const [lessonName, setLessonName] = useState('');
     const [content, setContent] = useState('');
     const [file, setFile] = useState(null); // Initialize file state as null
 
-    const user_Login = useSelector((state) => state.user_Login);
-    const { userInfo } = user_Login;
+    const course_View = useSelector((state) => state.course_View);
+    const { course } = course_View;
 
     const content_Create = useSelector((state) => state.content_Create);
     const dispatch = useDispatch();
@@ -32,6 +33,7 @@ const AddContentModal = ({ course }) => {
         }
 
         const formData = new FormData();
+        formData.append('courseID', course._id);
         formData.append('lessonNumber', lessonNumber);
         formData.append('lessonName', lessonName);
         formData.append('content', content);

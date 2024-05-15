@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { storage } from '../../firebaseConfig';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert';
 import { API_ENDPOINT } from "../../config";
 import { 
     ADD_CONTENT_REQUEST, ADD_CONTENT_SUCCESS, ADD_CONTENT_FAILURE
@@ -16,6 +16,11 @@ export const addContent = (formData) => async (dispatch, getState) => {
       // Get user info from state
       const {
         user_Login: { userInfo },
+      } = getState();
+
+      // Get course info from state
+      const {
+        course_View: { course },
       } = getState();
   
       // Configure request headers
@@ -54,6 +59,11 @@ export const addContent = (formData) => async (dispatch, getState) => {
         timer: 2000,
         button: false,
       });
+
+      // Redirect to course page after a short delay
+      setTimeout(function () {
+        window.location.href = `/view-course/${course._id}`;
+    }, 2000);
   
     } catch (error) {
       // If content addition fails, dispatch failure action and display error message

@@ -4,13 +4,14 @@ const { v4: uuidv4 } = require('uuid');
 
 // Create a new content with file upload
 exports.createContent = async (req, res) => {
-  const { lessonNumber, lessonName, content, fileUrl } = req.body;
+  const { courseID, lessonNumber, lessonName, content, fileUrl } = req.body;
 
   if (!fileUrl) {
     return res.status(400).json({ message: 'No file URL provided' });
   }
 
   const newContent = new Content({
+    courseID,
     lessonNumber,
     lessonName,
     content,
