@@ -2,14 +2,14 @@ const Enroll = require(`../models/enrollmentModel`);
 
 const enroll = async (req, res, next) => {
     try {
-        const { learnerId, courseId, email, mobilenumber } = req.body; // Retrieve email and mobilenumber from req.body
+        const { learnerId, courseId, email, phoneNumber } = req.body; // Retrieve learnerId, courseId, email, phoneNumber from req.body
 
         // Check if the enrollment already exists
         const existingEnroll = await Enroll.findOne({ learner: learnerId, course: courseId });
-        if (existingEnroll) throw new Error("Enrollment already exists");
+        if (existingEnroll) throw new Error('Enrollment already exists');
 
         // Create new enrollment
-        const newEnroll = new Enroll({ learner: learnerId, course: courseId, email, mobilenumber }); // Use email and mobilenumber variables
+        const newEnroll = new Enroll({ learner: learnerId, course: courseId, email, mobilenumber: phoneNumber }); // Ensure to use "mobilenumber" in the model
         const savedEnroll = await newEnroll.save();
 
         res.status(201).json({ message: 'Enrollment successful', enrollment: savedEnroll });

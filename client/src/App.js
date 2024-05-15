@@ -24,6 +24,7 @@ const App = () => {
 
             {/* learner-service routes */}
             <Route path='/enroll-course' element={<EnrollCourse/>} />
+            
         </Routes>
       </main>
     </BrowserRouter>

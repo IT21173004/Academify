@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import UserProfile from '../../../pages/userProfile/UserProfile';
-import EnrollCourse from './EnrollCourse'; // Assuming EnrollCourse is equivalent to AddCourse
-import StudentCourseList from './StudentCourseList'; // Assuming StudentCourseList is equivalent to InstructorCourseList
+import EnrollCourse from './EnrollCourse';
+import StudentCourseList from './StudentCourseList'; // StudentCourseList 
 import CourseList from './CourseList';
 
 const StudentDashboard = () => {
@@ -28,7 +28,7 @@ const StudentDashboard = () => {
                         <a className='nav-link' onClick={() => handleTabClick('manage-courses')}>Manage courses</a>
                         {showMore && (
                             <>
-                                <a className={`nav-link ${activeTab === 'manage-courses' ? 'active' : ''}`} onClick={() => handleTabClick('enroll-course')}>Enroll courses</a>
+                                <a className={`nav-link ${activeTab === 'manage-courses' ? 'active' : ''}`} onClick={() => handleTabClick('enroll-course')}>Enrolled courses</a>
                                 
                             </>
                         )}
@@ -40,7 +40,7 @@ const StudentDashboard = () => {
                         <div className={`tab-pane fade ${activeTab === 'home' ? 'show active' : ''}`} id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">..</div>
                         <div className={`tab-pane fade ${activeTab === 'profile' ? 'show active' : ''}`} id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab"><UserProfile/></div>
                         <div className={`tab-pane fade ${activeTab === 'available-courses' ? 'show active' : ''}`} id="v-pills-available-courses" role="tabpanel" aria-labelledby="v-pills-available-courses-tab"><CourseList/></div>
-                        <div className={`tab-pane fade ${activeTab === 'enroll-course' ? 'show active' : ''}`} id="v-pills-enroll-course" role="tabpanel" aria-labelledby="v-pills-enroll-course-tab"><EnrollCourse/></div>
+                        <div className={`tab-pane fade ${activeTab === 'enroll-course' ? 'show active' : ''}`} id="v-pills-enroll-course" role="tabpanel" aria-labelledby="v-pills-enroll-course-tab"><StudentCourseList/></div>
                         <div className={`tab-pane fade ${activeTab === 'settings' ? 'show active' : ''}`} id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
                     </div>
                 </div>
