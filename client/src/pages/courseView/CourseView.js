@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import courseViewImg from '../../assets/images/courseViewImg.png';
 import { getCourseById } from '../../actions/courseActions/courseActions';
+import AddContentModal from '../../components/addContentModal/AddContent';
 
 const CourseView = () => {
     // Get course ID from URL
@@ -61,7 +62,7 @@ const CourseView = () => {
                                         {isInstructor && (
                                             <div className="row mt-4">
                                                 <div className="col text-center">
-                                                    <button className="btn btn-outline-primary btn-sm" onClick={handleAddContent} style={{width: "100px"}}>Add Content</button>
+                                                    <AddContentModal/>
                                                 </div>
                                             </div>
                                         )}
