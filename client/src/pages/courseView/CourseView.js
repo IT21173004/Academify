@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import courseViewImg from '../../assets/images/courseViewImg.png';
 import { getCourseById } from '../../actions/courseActions/courseActions';
 import AddContentModal from '../../components/addContentModal/AddContent';
+import CourseContentListView from '../../components/CourseContentListView/CourseContentListView';
 
 const CourseView = () => {
     // Get course ID from URL
@@ -78,7 +79,8 @@ const CourseView = () => {
                                 </div>                                
                             </div>
                             <div className="row mt-4">
-                                <h5 className="pb-4">CONTENT</h5>                             
+                                <div className='row'><h5 className="pb-4">CONTENT</h5></div>
+                                <div className='row'><CourseContentListView courseId={id}/>  </div>                                
                             </div>
                         </div>
 
