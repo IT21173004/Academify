@@ -10,14 +10,14 @@ app.use(express.json());
 app.use("*", cors());
 
 app.get("/", (req, res) => {
-	res.send("API is Running");
+  res.send("API is Running");
 });
+app.use("/academify", proxy("http://localhost:5002")); //proxy to access user-service
+app.use("/course", proxy("http://localhost:5005")); //proxy to access course-service
+app.use("/payment", proxy("http://localhost:5006")); //proxy to access payment-service
 
-// app.use("/academify", proxy("http://localhost:5002")); //proxy to access user-service
-// app.use("/course", proxy("http://localhost:5005")); //proxy to access course-service
-
-app.use("/academify", proxy("http://academify-user-service-1:5002")); //proxy to access user-service
-app.use("/course", proxy("http://academify-course-service-1:5005")); //proxy to access course-service
+//app.use("/academify", proxy("http://academify-user-service-1:5002")); //proxy to access user-service
+//app.use("/course", proxy("http://academify-course-service-1:5005")); //proxy to access course-service
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, console.log(`Server Started on port ${PORT}..`));
