@@ -103,15 +103,7 @@ const CourseView = () => {
                       </div>
                     )}
                     {/* Render enroll button if user is learner */}
-                    {isLearner && (
-                      <div className="row mt-4">
-                        <div className="col text-center">
-                          <button className="btn btn-outline-primary btn-sm">
-                            Enroll
-                          </button>
-                        </div>
-                      </div>
-                    )}
+                    {isLearner && <div className="row mt-4"></div>}
                   </div>
                 </div>
               </div>
